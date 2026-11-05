@@ -1,0 +1,92 @@
+/* 单词卡 · 响应式与触屏适配 */
+
+/* 平板及以下：工具栏换行更紧凑 */
+@media (max-width: 900px) {
+  .toolbar .field { max-width: none; flex: 1 1 100%; }
+  .sort-seg { margin-left: 0 !important; }
+}
+
+/* 手机 */
+@media (max-width: 640px) {
+  body {
+    padding: 20px 12px 60px;
+    padding-bottom: calc(48px + env(safe-area-inset-bottom));
+  }
+  h1 { font-size: 22px; }
+  .sub { font-size: 12px; }
+
+  /* 输入框统一 16px，避免 iOS 聚焦时自动放大 */
+  .field, .btn, .seg-btn, .chip { font-size: 16px; }
+  .field { padding: 12px; }
+
+  #addForm .field { flex: 1 1 100%; }
+  .form-actions { width: 100%; }
+  .form-actions .btn { flex: 1; padding: 12px; }
+
+  .toolbar { gap: 8px; }
+  .seg { width: 100%; justify-content: center; }
+  .seg-btn { flex: 1; padding: 10px 4px; }
+  .toolbar > .btn { flex: 1; padding: 11px 8px; }
+  .toolbar .field { flex: 1 1 100%; max-width: none; }
+
+  /* 两列卡片，小屏也不塌成单列 */
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .card { height: 210px; }
+  .front .word { font-size: 21px; }
+  .back .meaning { font-size: 16px; }
+  .face { padding: 38px 10px 24px; }
+  .back .note { max-height: 46px; }
+
+  /* 触屏没有 hover：操作按钮常显，点按区域放大 */
+  .actions { opacity: .85; top: 8px; right: 8px; left: 8px; }
+  .icon-btn { min-height: 32px; padding: 6px 9px; font-size: 13px; }
+  .mark-btn { min-height: 34px; padding: 7px 10px; }
+  .undo-btn { width: 30px; height: 30px; }
+
+  .letters { gap: 6px; }
+  .chip { padding: 8px 12px; }
+
+  .toast {
+    bottom: calc(18px + env(safe-area-inset-bottom));
+    padding: 12px 16px;
+  }
+}
+
+/* 超窄屏（iPhone SE 等） */
+@media (max-width: 360px) {
+  .grid { grid-template-columns: 1fr; }
+  .card { height: 190px; }
+}
+
+/* 触屏设备：去掉依赖 hover 的效果 */
+@media (hover: none) {
+  .card:hover .actions { opacity: .85; }
+  .icon-btn:hover, .mark-btn:hover, .chip:hover { border-color: inherit; }
+}
+
+/* 横屏手机：压缩纵向留白 */
+@media (max-height: 480px) and (orientation: landscape) {
+  body { padding-top: 12px; }
+  header.page { margin-bottom: 12px; }
+}
+
+/* 尊重系统的减少动效设置 */
+@media (prefers-reduced-motion: reduce) {
+  .card-inner, .toast, .btn, .seg-btn, .icon-btn, .mark-btn { transition: none; }
+  .card.flipped .card-inner { transform: rotateY(180deg); }
+}
+
+/* 可访问性：键盘焦点可见 */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .meta { align-items: flex-start; flex-direction: row; gap: 8px; flex-wrap: wrap; }
+  .sync { padding: 3px 8px; }
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="theme-color" content="#f5f6fb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="单词卡">
+<title>单词卡 · Word Cards</title>
+<link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="assets/css/style.css?v=6">
+<link rel="stylesheet" href="assets/css/responsive.css?v=6">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page">
+    <div>
+      <h1><span>📚</span>单词卡</h1>
+      <div class="sub">输入单词 · 点击翻转 · 两个方向各累计 5 次，全部背满自动归档</div>
+    </div>
+    <div class="meta">
+      <div class="stats" id="stats"></div>
+      <div class="sync" id="syncStatus" data-kind="">未同步</div>
+    </div>
+  </header>
+
+  <div class="panel">
+    <form id="addForm" autocomplete="off">
+      <input id="wordInput" class="field" placeholder="单词，如 apple" required>
+      <input id="posInput" class="field" placeholder="词性，如 n." list="posList">
+      <datalist id="posList">
+        <option value="n."></option>
+        <option value="v."></option>
+        <option value="adj."></option>
+        <option value="adv."></option>
+        <option value="prep."></option>
+        <option value="conj."></option>
+        <option value="pron."></option>
+        <option value="num."></option>
+        <option value="art."></option>
+        <option value="int."></option>
+        <option value="phr."></option>
+      </datalist>
+      <input id="meaningInput" class="field" placeholder="汉译，如 苹果">
+      <input id="noteInput" class="field note-field" placeholder="备注（可选），如 复数 apples">
+      <div class="form-actions">
+        <button type="submit" id="submitBtn" class="btn">添加单词</button>
+        <button type="button" id="cancelBtn" class="btn ghost" hidden>取消</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="toolbar">
+    <div class="seg folder-seg" id="folderSeg">
+      <button type="button" class="seg-btn active" data-folder="all">📁 全部</button>
+      <button type="button" class="seg-btn" data-folder="learning">📖 正在背</button>
+      <button type="button" class="seg-btn" data-folder="archived">✅ 背过了</button>
+    </div>
+
+    <div class="seg sort-seg" id="sortSeg">
+      <button type="button" class="seg-btn active" data-sort="added">📥 录入顺序</button>
+      <button type="button" class="seg-btn" data-sort="alpha">A→Z 字母排序</button>
+      <button type="button" class="seg-btn" data-sort="random">🎲 随机排序</button>
+    </div>
+    <button type="button" class="btn ghost" id="flipAllBtn" title="一键把所有卡片翻到同一面">🔄 全部翻到背面</button>
+    <button type="button" class="btn ghost" id="reshuffleBtn">重新打乱</button>
+    <input id="searchInput" class="field" placeholder="搜索单词 / 释义 / 备注…">
+  </div>
+
+  <div class="letters" id="letterBar"></div>
+
+  <div class="grid" id="grid"></div>
+  <noscript><div class="empty">需要启用 JavaScript 才能使用单词卡</div></noscript>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/store.js?v=6" defer></script>
+<script src="assets/js/app.js?v=6" defer></script>
+</body>
+</html>

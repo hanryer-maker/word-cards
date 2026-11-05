@@ -1,0 +1,31 @@
+{
+  "url": "http://82.156.224.5/",
+  "capturedAt": "2026-11-04T15:14:04.150Z",
+  "durationMs": 4324,
+  "results": [
+    {
+      "url": "http://82.156.224.5/",
+      "title": "单词卡 · Word Cards",
+      "bodyLength": 2702,
+      "viewport": "1440x900",
+      "mobile": false,
+      "screenshot": "evidence/82.156.224.5-2026-11-04T15-13-59-desktop.png",
+      "consoleErrors": [],
+      "exceptions": [],
+      "failedRequests": [],
+      "httpErrors": []
+    },
+    {
+      "url": "http://82.156.224.5/",
+      "title": "单词卡 · Word Cards",
+      "bodyLength": 2702,
+      "viewport": "390x844",
+      "mobile": true,
+      "screenshot": "evidence/82.156.224.5-2026-11-04T15-13-59-mobile.png",
+      "consoleErrors": [],
+      "exceptions": [],
+      "failedRequests": [],
+      "httpErrors": []
+    }
+  ]
+}

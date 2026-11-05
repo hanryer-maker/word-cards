@@ -1,0 +1,20 @@
+[Unit]
+Description=Word Cards (单词卡) static site + KB backend
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/wordcard
+ExecStart=/usr/bin/node /home/ubuntu/wordcard/server.mjs /home/ubuntu/wordcard
+Environment=PORT=80
+Environment=HOST=0.0.0.0
+Environment=KB_DIR=/home/ubuntu/kb
+Environment=NOESIS_BIN=/home/ubuntu/noesis/bin/noesis.mjs
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
