@@ -40,16 +40,20 @@ ssh $=SSH_OPTS tencent 'cat /home/ubuntu/wordcard/data/meta.json 2>/dev/null' > 
 
 # 4) 提交并推送
 git add -A
-if git diff --cached --quiet; then
-  log "无变化，跳过提交"
+if ! git diff --cached --quiet; then
+  git commit -m "chore: 每日同步 $(date +%F)" >/dev/null || { log "提交失败"; exit 1; }
+fi
+
+# 即使本次无新改动，也要把上次没推成功的提交补推
+git fetch origin main --quiet 2>/dev/null || true
+AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+if [ "${AHEAD:-0}" -eq 0 ]; then
+  log "无变化，已是最新"
   exit 0
 fi
 
-STAMP="$(date +%F)"
-git commit -m "chore: 每日同步 ${STAMP}" >/dev/null || { log "提交失败"; exit 1; }
-
 if git push origin main >>"$PUSH_LOG" 2>&1; then
-  log "已推送 $(git rev-parse --short HEAD)"
+  log "已推送 ${AHEAD} 个提交，HEAD=$(git rev-parse --short HEAD)"
 else
   log "推送失败，见 $PUSH_LOG"
   exit 1
