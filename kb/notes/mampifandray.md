@@ -1,16 +1,16 @@
 ---
 title: "mampifandray"
 tags: ["word","v."]
-date: "2026-11-05"
+date: "2026-11-07"
 card_id: "37819a47-d618-4051-a46c-4bc96b70f2a1"
 pos: "v."
 meaning: "连在一起"
 note: ""
-markWord: 3
+markWord: 5
 markMeaning: 1
 isArchived: false
-updatedAt: 1793873097918
+updatedAt: 1794019953736
 ---
 释义：连在一起
 词性：v.
-进度：英 3/5 · 汉 1/5
+进度：英 5/5 · 汉 1/5
