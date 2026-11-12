@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="单词卡">
+  <rect width="512" height="512" rx="112" fill="#5b5bd6"/>
+  <rect x="96" y="128" width="320" height="256" rx="28" fill="#ffffff" opacity="0.96"/>
+  <rect x="128" y="108" width="256" height="256" rx="24" fill="#ececfd"/>
+  <g fill="#5b5bd6">
+    <rect x="160" y="176" width="192" height="20" rx="10"/>
+    <rect x="160" y="220" width="144" height="16" rx="8" opacity="0.75"/>
+    <rect x="160" y="252" width="168" height="16" rx="8" opacity="0.75"/>
+    <rect x="160" y="284" width="96" height="16" rx="8" opacity="0.5"/>
+  </g>
+</svg>

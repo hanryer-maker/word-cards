@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>马达加斯加语 · 双语例句库</title>
+<script src="jszip.min.js"></script>
+<style>
+  :root{
+    --bg:#f3f7f5;
+    --card:#ffffff;
+    --ink:#14231e;
+    --muted:#6b7d76;
+    --line:#e1e9e5;
+    --accent:#0e8f68;
+    --accent-dark:#0a7052;
+    --accent-soft:#e6f5ef;
+    --star:#e8a317;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:28px 18px 80px;}
+
+  /* ---------- Hero ---------- */
+  .hero{margin-bottom:20px;}
+  .hero h1{
+    font-size:24px;margin:0 0 6px;letter-spacing:.2px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .hero h1 .flag{
+    display:inline-flex;width:26px;height:18px;border-radius:3px;overflow:hidden;
+    box-shadow:0 0 0 1px rgba(0,0,0,.08);flex:none;
+  }
+  .hero h1 .flag i{display:block;height:100%;}
+  .hero h1 .flag i:nth-child(1){width:33%;background:#fff;border-right:1px solid #e6e6e6;}
+  .hero h1 .flag i:nth-child(2){width:33.5%;background:#fc3d32;}
+  .hero h1 .flag i:nth-child(3){width:33.5%;background:#007e3a;}
+  .hero .sub{margin:0;color:var(--muted);font-size:14px;}
+
+  /* ---------- Panels ---------- */
+  .panel{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    margin-bottom:14px;
+    box-shadow:0 1px 2px rgba(16,40,32,.04);
+  }
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .row + .row{margin-top:12px;}
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);
+    padding:8px 14px;border-radius:10px;font-size:14px;cursor:pointer;
+    font-family:inherit;transition:.15s;white-space:nowrap;
+  }
+  .btn:hover{background:#f7faf9;border-color:#cfdcd7;}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+  .btn.primary:hover{background:var(--accent-dark);border-color:var(--accent-dark);}
+  .btn.danger{color:#b4402f;border-color:#f0d6d1;}
+  .btn.danger:hover{background:#fdf2f0;}
+
+  .status{font-size:13px;color:var(--accent-dark);margin-left:auto;}
+  .status.err{color:#c0392b;}
+
+  /* ---------- Stats ---------- */
+  .stats{display:flex;gap:10px;flex-wrap:wrap;}
+  .stat{
+    flex:1 1 90px;min-width:80px;background:#f8fbfa;border:1px solid var(--line);
+    border-radius:11px;padding:8px 10px;text-align:center;
+  }
+  .stat b{display:block;font-size:20px;line-height:1.2;}
+  .stat span{font-size:12px;color:var(--muted);}
+
+  /* ---------- Segmented ---------- */
+  .segmented{display:inline-flex;background:#f1f6f4;border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap;}
+  .segmented button{
+    appearance:none;border:0;background:transparent;font-family:inherit;
+    padding:6px 13px;border-radius:8px;font-size:13.5px;color:var(--muted);cursor:pointer;transition:.15s;
+  }
+  .segmented button:hover{color:var(--ink);}
+  .segmented button.active{background:#fff;color:var(--accent-dark);font-weight:600;box-shadow:0 1px 3px rgba(16,40,32,.1);}
+
+  .switch{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--muted);cursor:pointer;user-select:none;}
+  .switch input{accent-color:var(--accent);width:16px;height:16px;cursor:pointer;}
+
+  input[type=search]{
+    flex:1 1 180px;min-width:150px;padding:8px 12px;border-radius:10px;
+    border:1px solid var(--line);font-family:inherit;font-size:14px;background:#fbfdfc;outline:none;
+  }
+  input[type=search]:focus{border-color:var(--accent);background:#fff;}
+
+  /* ---------- Cards ---------- */
+  #list{margin-top:4px;}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:13px 16px 15px;margin-bottom:11px;
+    box-shadow:0 1px 2px rgba(16,40,32,.04);
+    transition:box-shadow .18s,border-color .18s,opacity .18s;
+  }
+  .card:hover{box-shadow:0 5px 16px rgba(16,40,32,.07);}
+  .card.is-done{border-color:#cbe8db;background:#fbfefc;}
+  .card.is-done .line{opacity:.72;}
+
+  .card-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .badge{
+    font-size:11.5px;padding:2px 9px;border-radius:20px;background:var(--accent-soft);
+    color:var(--accent-dark);font-weight:600;letter-spacing:.2px;
+  }
+  .badge.star-badge{background:#fdf4e0;color:#a97a05;}
+  .badge.ai-badge{background:#efe9ff;color:#5b3ec8;}
+  .badge.pend-badge{background:#fdeeee;color:#b04a3a;}
+  .badge.warn-badge{background:#fff2e6;color:#b06a1f;}
+  .badge.ok-badge{background:#e8f7ef;color:#2f7a52;}
+  .actions{margin-left:auto;display:flex;gap:4px;}
+  .icon{
+    appearance:none;border:1px solid transparent;background:transparent;cursor:pointer;
+    width:32px;height:32px;border-radius:9px;font-size:15px;line-height:1;
+    color:#9db0a9;display:flex;align-items:center;justify-content:center;
+    transition:.15s;font-family:inherit;padding:0;
+  }
+  .icon:hover{background:#f1f6f4;color:var(--ink);}
+  .icon.on{color:var(--star);}
+  .icon.on[data-act=done]{color:var(--accent);}
+
+  .line{transition:filter .18s,opacity .18s;}
+  .line.src{font-size:17px;font-weight:600;letter-spacing:.1px;}
+  .line.tgt{font-size:15.5px;color:#4d635b;margin-top:3px;}
+
+  .line.tgt.masked{
+    filter:blur(6.5px);
+    opacity:.65;
+    cursor:pointer;
+    user-select:none;
+  }
+  .line.tgt.masked:hover{opacity:.8;}
+  .line.tgt.masked::selection{background:transparent;}
+
+  .empty{
+    text-align:center;color:var(--muted);padding:52px 20px;
+    border:1.5px dashed var(--line);border-radius:var(--radius);background:#fbfdfc;font-size:14.5px;
+  }
+  .empty b{display:block;font-size:16px;color:var(--ink);margin-bottom:6px;}
+
+  /* ---------- Modal ---------- */
+  .modal{
+    position:fixed;inset:0;background:rgba(12,32,26,.42);
+    display:none;align-items:center;justify-content:center;padding:18px;z-index:50;
+    backdrop-filter:blur(2px);
+  }
+  .modal.open{display:flex;}
+  .modal-box{
+    background:#fff;border-radius:16px;padding:22px;width:100%;max-width:560px;
+    max-height:88vh;overflow:auto;box-shadow:0 20px 60px rgba(10,40,30,.25);
+  }
+  .modal-box h3{margin:0 0 6px;font-size:18px;}
+  .modal-box .hint{margin:0 0 14px;font-size:13px;color:var(--muted);}
+  .field{display:block;margin-bottom:13px;}
+  .field span{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:5px;}
+  .field input,.field textarea{
+    width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);
+    font-family:inherit;font-size:14.5px;background:#fbfdfc;outline:none;resize:vertical;
+  }
+  .field input:focus,.field textarea:focus{border-color:var(--accent);background:#fff;}
+  .field.cbx{display:flex;align-items:center;gap:8px;}
+  .field.cbx input{width:auto;margin:0;}
+  .field.cbx span{display:inline;margin:0;color:var(--ink);}
+  .modal-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;}
+
+  @media (max-width:560px){
+    .wrap{padding:18px 12px 70px;}
+    .hero h1{font-size:19px;}
+    .status{margin-left:0;width:100%;}
+    .line.src{font-size:16px;}
+  }
+</style>
+<link rel="stylesheet" href="/site.css" />
+</head>
+<body>
+<header class="tn-bar">
+  <div class="tn-inner">
+    <a class="tn-back" href="/">← 返回首页</a>
+    <nav class="tn-nav" aria-label="站点导航">
+      <a href="/wordcard/">📚 单词卡</a>
+      <a href="/examples/" class="active">🧩 双语例句</a>
+      <a href="/dict/">🔎 马达词典</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+
+  <header class="hero">
+    <h1><span class="flag"><i></i><i></i><i></i></span>马达加斯加语 · 双语例句库</h1>
+    <p class="sub">从 PPT 自动提取「马达加斯加语 ↔ 中文」对照句 · 收藏 · 背诵打卡</p>
+  </header>
+
+  <!-- 工具栏 -->
+  <section class="panel">
+    <div class="row">
+      <button class="btn primary" id="importBtn">📄 导入 PPTX</button>
+      <input type="file" id="fileInput" accept=".pptx" hidden />
+      <button class="btn" id="pasteBtn">📋 粘贴文本</button>
+      <button class="btn" id="manualBtn">✏️ 手动添加</button>
+      <button class="btn" id="aiBtn">⚙️ 校对设置</button>
+      <button class="btn" id="fillBtn">🌐 补译缺失</button>
+      <button class="btn" id="reviewBtn">🔍 校对中文</button>
+      <button class="btn" id="tidyBtn">🧹 整理现有</button>
+      <button class="btn danger" id="clearBtn">清空全部</button>
+      <span class="status" id="status"></span>
+    </div>
+  </section>
+
+  <!-- 统计 + 控制 -->
+  <section class="panel">
+    <div class="row stats">
+      <div class="stat"><b id="statAll">0</b><span>总计</span></div>
+      <div class="stat"><b id="statStar">0</b><span>收藏</span></div>
+      <div class="stat"><b id="statTodo">0</b><span>待背诵</span></div>
+      <div class="stat"><b id="statDone">0</b><span>已掌握</span></div>
+    </div>
+    <div class="row" style="margin-top:14px;">
+      <div class="segmented" id="dirSeg">
+        <button data-dir="mg2zh">马达 → 中</button>
+        <button data-dir="zh2mg">中 → 马达</button>
+        <button data-dir="mixed">混合</button>
+      </div>
+      <label class="switch"><input type="checkbox" id="hideToggle" checked /> 遮挡答案（点卡片揭开）</label>
+    </div>
+    <div class="row">
+      <div class="segmented" id="filterSeg">
+        <button data-filter="all">全部</button>
+        <button data-filter="star">⭐ 收藏</button>
+        <button data-filter="todo">未掌握</button>
+        <button data-filter="done">✅ 已掌握</button>
+      </div>
+      <input type="search" id="search" placeholder="搜索马达语 / 中文…" />
+    </div>
+  </section>
+
+  <main id="list"></main>
+</div>
+
+<!-- 弹窗 -->
+<div class="modal" id="modal"><div class="modal-box"></div></div>
+
+<script>
+/* =========================================================
+   数据层
+   ========================================================= */
+const DATA_KEY = 'mg-zh-sentences-v1';
+const SETTINGS_KEY = 'mg-zh-settings-v1';
+
+let sentences = [];
+let settings = { dir: 'mg2zh', hidden: true, filter: 'all', apiKey: '', model: 'deepseek-chat', verify: true };
+
+function loadAll(){
+  try{
+    const raw = localStorage.getItem(DATA_KEY);
+    if (raw) sentences = JSON.parse(raw) || [];
+  }catch(e){ sentences = []; }
+  try{
+    const s = localStorage.getItem(SETTINGS_KEY);
+    if (s) settings = Object.assign(settings, JSON.parse(s));
+  }catch(e){}
+}
+function saveData(){
+  try{ localStorage.setItem(DATA_KEY, JSON.stringify(sentences)); }catch(e){}
+}
+function saveSettings(){
+  try{ localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }catch(e){}
+}
+function uid(){
+  return Math.random().toString(36).slice(2,9) + Date.now().toString(36);
+}
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* =========================================================
+   语言识别 & 拆句
+   ========================================================= */
+const HAN_RE = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/;
+const LATIN_RE = /[A-Za-zÀ-ÖØ-öø-ÿĀ-ſ]/;
+const TRIM_RE = /^[\s\-–—:：·•|｜\/,、;；]+|[\s\-–—:：·•|｜\/,、;；]+$/g;
+const PAREN_CHARS_RE = /[（）()【】\[\]［］]/g;
+const SENT_PUNCT_RE = /[.,。，!！?？…]/;
+
+/** 只去掉括号符号本身，括号里的内容保留 */
+function stripParens(s){
+  return String(s).replace(PAREN_CHARS_RE, ' ');
+}
+
+function cleanText(s){
+  return stripParens(s)
+    .replace(/\s+([.,!?;:。，！？；：、])/g, '$1')
+    .replace(TRIM_RE, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** 只看马达语：带 。，?! 这类句读才算句子 */
+function isSentence(mg){
+  return SENT_PUNCT_RE.test(mg);
+}
+
+/** “……Rakoto.Rakoto” 这种重复人名：留一个在原句，多出来的挪到译文行 */
+function fixNameTail(mg, zh){
+  const m = mg.match(/^(.*?)([A-Za-zÀ-ÿ'\-]+)(\s*\.\s*)([A-Za-zÀ-ÿ'\-]+)\s*$/);
+  if (!m) return { mg, zh };
+  if (m[2].toLowerCase() !== m[4].toLowerCase()) return { mg, zh };
+  const name = m[4];
+  const newMg = m[1] + m[2] + '.';
+  let newZh = zh;
+  if (/[。！？.!?]$/.test(newZh)) newZh = newZh.slice(0, -1) + '，' + name + '。';
+  else newZh = newZh + '，' + name + '。';
+  return { mg: newMg, zh: newZh };
+}
+
+/** 把一行按“中文段 / 拉丁字母段”切开 */
+function splitLine(line){
+  const segs = [];
+  let buf = '', cur = null;
+  const push = () => {
+    const t = buf.trim();
+    if (t && cur) segs.push({ type: cur, text: t });
+    buf = '';
+  };
+  for (const ch of line){
+    let t;
+    if (HAN_RE.test(ch)) t = 'zh';
+    else if (LATIN_RE.test(ch)) t = 'la';
+    else t = 'other';
+
+    if (t === 'other'){ buf += ch; continue; }   // 标点粘在相邻段上
+    if (cur && t !== cur) push();
+    cur = t;
+    buf += ch;
+  }
+  push();
+
+  // 中文译文里保留的马达语人名（如 “谢谢你，Rakoto。”）不当作马达语句子：
+  // 紧跟中文、且很短的拉丁片段，并回中文那段
+  for (let i = segs.length - 1; i >= 1; i--){
+    const cur = segs[i], prev = segs[i - 1];
+    if (cur.type === 'la' && prev.type === 'zh' && cur.text.split(/\s+/).filter(Boolean).length <= 3){
+      prev.text = prev.text.replace(/\s+$/, '') + cur.text;
+      segs.splice(i, 1);
+    }
+  }
+  return segs;
+}
+
+/** 判断一段拉丁字母文本像不像马达加斯加语 */
+function looksLikeMalagasy(s){
+  if (!LATIN_RE.test(s)) return false;
+  if (HAN_RE.test(s)) return false;
+  const letters = s.replace(/[^A-Za-zÀ-ÿ]/g, '');
+  if (letters.length < 2) return false;
+  // 马达加斯加语字母表里没有 c / q / w / x（借词偶尔出现）
+  const rare = (s.match(/[cCqQwWxX]/g) || []).length;
+  if (letters.length >= 5 && rare / letters.length > 0.12) return false;
+  return true;
+}
+
+/** 从一串文本行里配对出 中↔马 句子 */
+function pairLines(lines){
+  const segs = [];
+  for (const line of lines){
+    // 先在整行层面去掉括号符号，避免括号被“中/拉丁”切分拆开
+    for (const seg of splitLine(stripParens(line))) segs.push(seg);
+  }
+
+  const pairs = [], solo = [];
+  let i = 0;
+  while (i < segs.length){
+    const a = segs[i], b = segs[i + 1];
+    if (b && a.type !== b.type){
+      const mg = cleanText(a.type === 'la' ? a.text : b.text);
+      const zh = cleanText(a.type === 'zh' ? a.text : b.text);
+      if (mg && zh && looksLikeMalagasy(mg) && HAN_RE.test(zh)){
+        pairs.push({ mg, zh });
+        i += 2;
+        continue;
+      }
+    }
+    if (a.type === 'la'){
+      const mg = cleanText(a.text);
+      if (mg && looksLikeMalagasy(mg)) solo.push(mg);
+    }
+    i += 1;
+  }
+  return { pairs, solo };
+}
+
+/* =========================================================
+   PPTX 解析
+   ========================================================= */
+async function parsePptx(file){
+  if (typeof JSZip === 'undefined'){
+    throw new Error('解析库未加载，请检查网络后刷新页面');
+  }
+  const zip = await JSZip.loadAsync(file);
+
+  const slideNames = Object.keys(zip.files)
+    .filter(n => /^ppt\/slides\/slide\d+\.xml$/i.test(n))
+    .sort((a, b) => {
+      const na = +(a.match(/slide(\d+)\.xml$/i) || [0,0])[1];
+      const nb = +(b.match(/slide(\d+)\.xml$/i) || [0,0])[1];
+      return na - nb;
+    });
+
+  if (!slideNames.length) throw new Error('没有找到幻灯片内容（文件可能不是 .pptx）');
+
+  const allPairs = [], allSolo = [];
+  for (const name of slideNames){
+    const xml = await zip.file(name).async('string');
+    const doc = new DOMParser().parseFromString(xml, 'application/xml');
+
+    const lines = [];
+    const paras = doc.getElementsByTagNameNS('*', 'p');
+    for (let k = 0; k < paras.length; k++){
+      const p = paras[k];
+      const ts = p.getElementsByTagNameNS('*', 't');
+      let s = '';
+      for (let j = 0; j < ts.length; j++) s += ts[j].textContent;
+      s = s.replace(/\s+/g, ' ').trim();
+      if (s) lines.push(s);
+    }
+
+    const r = pairLines(lines);
+    allPairs.push(...r.pairs);
+    allSolo.push(...r.solo);
+  }
+  return { pairs: allPairs, solo: allSolo };
+}
+
+/* =========================================================
+   增删改查
+   ========================================================= */
+function normalizeKey(mg, zh){
+  return (mg + '||' + zh).toLowerCase().replace(/\s+/g, '');
+}
+
+/* =========================================================
+   DeepSeek 译文校对
+   ========================================================= */
+const AI_CACHE_KEY = 'mg-zh-ai-cache-v1';
+const AI_DIFF_LIMIT = 70;
+let aiCache = {};
+
+function loadAiCache(){
+  try{ aiCache = JSON.parse(localStorage.getItem(AI_CACHE_KEY) || '{}') || {}; }catch(e){ aiCache = {}; }
+}
+function saveAiCache(){
+  try{ localStorage.setItem(AI_CACHE_KEY, JSON.stringify(aiCache)); }catch(e){}
+}
+function aiReady(){
+  return !!(settings.verify !== false && settings.apiKey);
+}
+
+async function aiCheckChunk(chunk){
+  const body = {
+    model: settings.model || 'deepseek-chat',
+    temperature: 0,
+    response_format: { type: 'json_object' },
+    messages: [
+      { role: 'system', content: '你是马达加斯加语→中文翻译审校。用户给出若干条 {i, mg, zh}：mg 是马达加斯加语原文，zh 是 PPT 给出的中文译文。先在心里把 mg 准确译成中文，再判断 zh 与正确译文的语义差距，给出 0-100 的差异百分比（0=意思一致，100=无关或译文错误）。语序、语气、同义词、详略、标点差异都不算大差距。只输出 JSON：{"results":[{"i":1,"diff":0,"suggest":"更准确的中文译文","reason":"简短理由"}]}' },
+      { role: 'user', content: JSON.stringify(chunk.map((p, i) => ({ i: i + 1, mg: p.mg, zh: p.zh }))) }
+    ]
+  };
+  const res = await fetch('https://api.deepseek.com/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + settings.apiKey },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok){
+    let msg = 'HTTP ' + res.status;
+    try{
+      const j = await res.json();
+      if (j && j.error && j.error.message) msg += '：' + j.error.message;
+    }catch(e){}
+    if (res.status === 401) msg += '（API Key 不对）';
+    throw new Error(msg);
+  }
+  const data = await res.json();
+  const text = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '{}';
+  let parsed = {};
+  try{ parsed = JSON.parse(text); }catch(e){
+    const m = text.match(/\{[\s\S]*\}/);
+    if (m){ try{ parsed = JSON.parse(m[0]); }catch(e2){} }
+  }
+  const arr = parsed.results || parsed.data || parsed.items || [];
+  const out = chunk.map(() => null);
+  for (const r of arr){
+    const i = Number(r.i || r.index || r.id);
+    if (i >= 1 && i <= chunk.length){
+      out[i - 1] = {
+        diff: Math.max(0, Math.min(100, Number(r.diff) || 0)),
+        reason: String(r.reason || ''),
+        suggest: String(r.suggest || '').trim()
+      };
+    }
+  }
+  return out;
+}
+
+/** 逐批送 DeepSeek 校对，返回 { kept, dropped } */
+async function aiFilter(list){
+  const kept = [], dropped = [], todo = [];
+  for (const p of list){
+    const ck = normalizeKey(p.mg, p.zh);
+    if (aiCache[ck]){
+      const item = { mg: p.mg, zh: p.zh, ai: aiCache[ck] };
+      (aiCache[ck].diff > AI_DIFF_LIMIT ? dropped : kept).push(item);
+    } else {
+      todo.push(p);
+    }
+  }
+  const CHUNK = 8;
+  for (let s = 0; s < todo.length; s += CHUNK){
+    const chunk = todo.slice(s, s + CHUNK);
+    setStatus(`DeepSeek 校对中 ${Math.min(s + CHUNK, todo.length)}/${todo.length}…`);
+    const res = await aiCheckChunk(chunk);
+    chunk.forEach((p, i) => {
+      const r = res[i] || { diff: 0, reason: '未返回结果，按保留处理' };
+      aiCache[normalizeKey(p.mg, p.zh)] = r;
+      const item = { mg: p.mg, zh: p.zh, ai: r };
+      (r.diff > AI_DIFF_LIMIT ? dropped : kept).push(item);
+    });
+    saveAiCache();
+  }
+  return { kept, dropped };
+}
+
+async function aiTranslateChunk(chunk){
+  const body = {
+    model: settings.model || 'deepseek-chat',
+    temperature: 0.2,
+    response_format: { type: 'json_object' },
+    messages: [
+      { role: 'system', content: '你是马达加斯加语→中文翻译。把每条马达加斯加语准确、自然地译成中文；人名、地名等专有名词保留原样或音译，不要解释、不要加注释。只输出 JSON：{"results":[{"i":1,"zh":"中文译文"}]}' },
+      { role: 'user', content: JSON.stringify(chunk.map((mg, i) => ({ i: i + 1, mg }))) }
+    ]
+  };
+  const res = await fetch('https://api.deepseek.com/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + settings.apiKey },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok){
+    let msg = 'HTTP ' + res.status;
+    try{
+      const j = await res.json();
+      if (j && j.error && j.error.message) msg += '：' + j.error.message;
+    }catch(e){}
+    if (res.status === 401) msg += '（API Key 不对）';
+    throw new Error(msg);
+  }
+  const data = await res.json();
+  const text = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '{}';
+  let parsed = {};
+  try{ parsed = JSON.parse(text); }catch(e){
+    const m = text.match(/\{[\s\S]*\}/);
+    if (m){ try{ parsed = JSON.parse(m[0]); }catch(e2){} }
+  }
+  const arr = parsed.results || parsed.data || parsed.items || [];
+  const out = chunk.map(() => '');
+  for (const r of arr){
+    const i = Number(r.i || r.index || r.id);
+    if (i >= 1 && i <= chunk.length) out[i - 1] = String(r.zh || r.translation || '').trim();
+  }
+  return out;
+}
+
+async function aiTranslateAll(list){
+  const out = [];
+  const CHUNK = 8;
+  for (let s = 0; s < list.length; s += CHUNK){
+    const chunk = list.slice(s, s + CHUNK);
+    setStatus(`DeepSeek 补译中 ${Math.min(s + CHUNK, list.length)}/${list.length}…`);
+    const res = await aiTranslateChunk(chunk);
+    chunk.forEach((mg, i) => {
+      const zh = (res[i] || '').trim();
+      if (zh) out.push({ mg, zh });
+    });
+  }
+  return out;
+}
+
+function showDropped(dropped){
+  const overlay = document.getElementById('modal');
+  const box = overlay.querySelector('.modal-box');
+  box.innerHTML = `
+    <h3>PPT 译文和原文差距 &gt;70%，共 ${dropped.length} 条</h3>
+    <p class="hint">这些句子照样保留了，只是不再用 PPT 那版译文，改由 AI 重新翻译并标注 🤖；如果 AI 没跑成功就标成“待补译”。</p>
+    <div style="max-height:52vh;overflow:auto;border:1px solid var(--line);border-radius:10px">
+      ${dropped.map(d => `<div style="padding:10px 12px;border-bottom:1px solid var(--line)">
+        <div style="font-weight:600">${esc(d.mg)}</div>
+        <div style="color:var(--muted);margin-top:2px">${esc(d.zh)}</div>
+        <div style="font-size:12.5px;color:#b4532a;margin-top:4px">差距 ${d.ai.diff}%${d.ai.reason ? ' · ' + esc(d.ai.reason) : ''}</div>
+      </div>`).join('')}
+    </div>
+    <div class="modal-foot"><button class="btn primary" data-close>知道了</button></div>`;
+  overlay.classList.add('open');
+  box.querySelector('[data-close]').onclick = () => overlay.classList.remove('open');
+  overlay.onclick = e => { if (e.target === overlay) overlay.classList.remove('open'); };
+}
+
+async function addPairs(pairs, soloSegs){
+  let dup = 0, notSentence = 0;
+  const seen = new Set(sentences.map(s => normalizeKey(s.mg, s.zh)));
+  const mgSeen = new Set(sentences.map(s => s.mg.toLowerCase()));
+  const candidates = [];
+
+  for (const p of (pairs || [])){
+    const fixed = fixNameTail(cleanText(p.mg || ''), cleanText(p.zh || ''));
+    const mg = fixed.mg, zh = fixed.zh;
+    if (!mg || !zh) continue;
+    if (!isSentence(mg)){ notSentence++; continue; }
+    const key = normalizeKey(mg, zh);
+    if (seen.has(key)){ dup++; continue; }
+    seen.add(key);
+    mgSeen.add(mg.toLowerCase());
+    candidates.push({ mg, zh });
+  }
+
+  // 只有马达语、没有中文的句子：也要收，译文后面补
+  const solos = [];
+  for (const raw of (soloSegs || [])){
+    const mg = fixNameTail(cleanText(raw), '').mg;
+    if (!mg) continue;
+    if (!isSentence(mg)){ notSentence++; continue; }
+    if (mgSeen.has(mg.toLowerCase())) continue;
+    mgSeen.add(mg.toLowerCase());
+    solos.push(mg);
+  }
+
+  if (!candidates.length && !solos.length){
+    render();
+    const bits = [];
+    if (dup) bits.push(`重复 ${dup} 句`);
+    if (notSentence) bits.push(`马达语没有句读的 ${notSentence} 条`);
+    setStatus('没有可导入的句子' + (bits.length ? `（${bits.join('，')}）` : ''), true);
+    return;
+  }
+
+  let kept = candidates, bad = [], aiErr = '';
+  if (aiReady() && candidates.length){
+    try{
+      const r = await aiFilter(candidates);
+      kept = r.kept; bad = r.dropped;
+    }catch(err){
+      aiErr = err.message || String(err);
+    }
+  }
+
+  // 需要 AI 翻译的：没有中文的 + PPT 译文被判定不可信的（句子照样保留）
+  const needAi = [], aiSeen = new Set();
+  for (const mg of solos.concat(bad.map(b => b.mg))){
+    if (aiSeen.has(mg.toLowerCase())) continue;
+    aiSeen.add(mg.toLowerCase());
+    needAi.push(mg);
+  }
+
+  const madeMap = new Map();
+  for (const b of bad){
+    if (b.ai && b.ai.suggest) madeMap.set(b.mg, b.ai.suggest);
+  }
+  const stillNeed = needAi.filter(mg => !madeMap.has(mg));
+  if (stillNeed.length && aiReady() && !aiErr){
+    try{
+      const made = await aiTranslateAll(stillNeed);
+      made.forEach(m => madeMap.set(m.mg, m.zh));
+    }catch(err){
+      aiErr = err.message || String(err);
+    }
+  }
+
+  for (const p of kept){
+    sentences.push({ id: uid(), mg: p.mg, zh: p.zh, starred: false, done: false, createdAt: Date.now() });
+  }
+  for (const mg of needAi){
+    const zh = madeMap.get(mg);
+    sentences.push({
+      id: uid(), mg,
+      zh: zh || '（待补译）',
+      aiGen: !!zh, pending: !zh,
+      starred: false, done: false, createdAt: Date.now()
+    });
+  }
+  saveData(); render();
+
+  const parts = [`已导入 ${kept.length} 句`];
+  if (madeMap.size) parts.push(`AI 补译 ${madeMap.size} 句`);
+  const pendCount = needAi.filter(mg => !madeMap.has(mg)).length;
+  if (pendCount) parts.push(`待补译 ${pendCount} 句`);
+  if (bad.length) parts.push(`PPT 译文不符 ${bad.length} 条（已换 AI 译文）`);
+  if (dup) parts.push(`重复 ${dup} 句`);
+  if (notSentence) parts.push(`非句子 ${notSentence} 条`);
+  if (!aiReady()) parts.push('未设置 API Key，AI 校对/补译已跳过');
+  if (aiErr) parts.push('AI 出错：' + aiErr);
+  setStatus(parts.join('，'), !!aiErr);
+  if (bad.length) showDropped(bad);
+}
+
+/* =========================================================
+   渲染
+   ========================================================= */
+function dirFor(s){
+  if (settings.dir === 'mixed'){
+    let h = 0;
+    for (let i = 0; i < s.id.length; i++) h = (h * 31 + s.id.charCodeAt(i)) >>> 0;
+    return h % 2 ? 'mg2zh' : 'zh2mg';
+  }
+  return settings.dir;
+}
+
+function cardHTML(s){
+  const dir = dirFor(s);
+  const isMGFirst = dir === 'mg2zh';
+  const srcText = isMGFirst ? s.mg : s.zh;
+  const tgtText = isMGFirst ? s.zh : s.mg;
+  const dirLabel = isMGFirst ? '马达 → 中' : '中 → 马达';
+  const masked = settings.hidden ? ' masked' : '';
+
+  return `<article class="card${s.done ? ' is-done' : ''}" data-id="${s.id}">
+    <div class="card-head">
+      <span class="badge">${dirLabel}</span>
+      ${s.starred ? '<span class="badge star-badge">⭐ 收藏</span>' : ''}
+      ${s.aiGen ? '<span class="badge ai-badge">🤖 AI 译</span>' : ''}
+      ${s.pending ? '<span class="badge pend-badge">⏳ 待补译</span>' : ''}
+      ${s.review && s.review.diff > 70 ? '<span class="badge warn-badge">⚠ 待复核</span>' : ''}
+      ${s.aiFixed ? '<span class="badge ok-badge">✔ AI 校</span>' : ''}
+      <div class="actions">
+        <button class="icon${s.starred ? ' on' : ''}" data-act="star" title="收藏 / 取消收藏">${s.starred ? '★' : '☆'}</button>
+        <button class="icon${s.done ? ' on' : ''}" data-act="done" title="${s.done ? '移回待背诵' : '标记为已掌握'}">✓</button>
+        <button class="icon" data-act="del" title="删除这一句">🗑</button>
+      </div>
+    </div>
+    <div class="line src">${esc(srcText)}</div>
+    <div class="line tgt${masked}">${esc(tgtText)}</div>
+  </article>`;
+}
+
+function render(){
+  // 同步控件状态
+  document.querySelectorAll('#dirSeg button').forEach(b =>
+    b.classList.toggle('active', b.dataset.dir === settings.dir));
+  document.querySelectorAll('#filterSeg button').forEach(b =>
+    b.classList.toggle('active', b.dataset.filter === settings.filter));
+  document.getElementById('hideToggle').checked = settings.hidden;
+
+  // 统计
+  document.getElementById('statAll').textContent = sentences.length;
+  document.getElementById('statStar').textContent = sentences.filter(s => s.starred).length;
+  document.getElementById('statTodo').textContent = sentences.filter(s => !s.done).length;
+  document.getElementById('statDone').textContent = sentences.filter(s => s.done).length;
+
+  // 过滤
+  const q = (document.getElementById('search').value || '').trim().toLowerCase();
+  const list = sentences.filter(s => {
+    if (settings.filter === 'star' && !s.starred) return false;
+    if (settings.filter === 'todo' && s.done) return false;
+    if (settings.filter === 'done' && !s.done) return false;
+    if (q){
+      const hay = (s.mg + ' ' + s.zh).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const box = document.getElementById('list');
+  if (!sentences.length){
+    box.innerHTML = `<div class="empty">
+      <b>还没有句子</b>
+      点击上方「导入 PPTX」自动提取，或「手动添加」自己录入一句。
+    </div>`;
+    return;
+  }
+  if (!list.length){
+    box.innerHTML = `<div class="empty"><b>这个列表是空的</b>换个筛选条件或搜索词试试。</div>`;
+    return;
+  }
+  box.innerHTML = list.map(cardHTML).join('');
+}
+
+/* =========================================================
+   状态提示
+   ========================================================= */
+let statusTimer = null;
+function setStatus(msg, isErr){
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.classList.toggle('err', !!isErr);
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(() => { el.textContent = ''; }, 6000);
+}
+
+/* =========================================================
+   弹窗
+   ========================================================= */
+function openModal({ title, hint, fields, onSubmit, okText = '确定' }){
+  const overlay = document.getElementById('modal');
+  const box = overlay.querySelector('.modal-box');
+
+  box.innerHTML = `
+    <h3>${esc(title)}</h3>
+    ${hint ? `<p class="hint">${esc(hint)}</p>` : ''}
+    ${fields.map(f => f.type === 'checkbox'
+      ? `<label class="field cbx"><input type="checkbox" name="${f.name}" ${f.value ? 'checked' : ''} /><span>${esc(f.label || '')}</span></label>`
+      : `<label class="field">
+        ${f.label ? `<span>${esc(f.label)}</span>` : ''}
+        ${f.type === 'textarea'
+          ? `<textarea name="${f.name}" rows="${f.rows || 10}" placeholder="${esc(f.placeholder || '')}">${esc(f.value || '')}</textarea>`
+          : `<input type="${f.type === 'password' ? 'password' : 'text'}" name="${f.name}" value="${esc(f.value || '')}" placeholder="${esc(f.placeholder || '')}" />`}
+      </label>`).join('')}
+    <div class="modal-foot">
+      <button class="btn" data-close>取消</button>
+      <button class="btn primary" data-ok>${esc(okText)}</button>
+    </div>`;
+
+  overlay.classList.add('open');
+
+  const close = () => overlay.classList.remove('open');
+  box.querySelector('[data-close]').onclick = close;
+  box.querySelector('[data-ok]').onclick = () => {
+    const values = {};
+    fields.forEach(f => {
+      const el = box.querySelector(`[name="${f.name}"]`);
+      values[f.name] = el ? (f.type === 'checkbox' ? el.checked : el.value) : '';
+    });
+    if (onSubmit(values) !== false) close();
+  };
+  overlay.onclick = e => { if (e.target === overlay) close(); };
+
+  const first = box.querySelector('textarea, input');
+  if (first) setTimeout(() => first.focus(), 60);
+}
+
+/* =========================================================
+   交互
+   ========================================================= */
+// 导入 PPTX
+document.getElementById('importBtn').onclick = () => document.getElementById('fileInput').click();
+
+document.getElementById('fileInput').onchange = e => {
+  const f = e.target.files && e.target.files[0];
+  if (f) handleFile(f);
+  e.target.value = '';
+};
+
+async function handleFile(file){
+  if (!/\.pptx$/i.test(file.name)){
+    setStatus('请选择 .pptx 格式的文件（旧版 .ppt 请先另存为 .pptx）', true);
+    return;
+  }
+  setStatus('正在解析…');
+  try{
+    const r = await parsePptx(file);
+    await addPairs(r.pairs, r.solo);
+  }catch(err){
+    console.error(err);
+    setStatus('解析失败：' + (err.message || err), true);
+  }
+}
+
+// 拖拽导入
+document.addEventListener('dragover', e => e.preventDefault());
+document.addEventListener('drop', e => {
+  e.preventDefault();
+  const f = e.dataTransfer.files && e.dataTransfer.files[0];
+  if (f) handleFile(f);
+});
+
+// 粘贴文本
+document.getElementById('pasteBtn').onclick = () => {
+  openModal({
+    title: '粘贴文本',
+    hint: '每行一句。中马可以写在同一行（例如 “Misaotra anao. 谢谢你。”），也可以上下两行交替出现，系统会自动配对。括号只去掉符号、内容保留；马达语没有 。，?! 的条目不算句子、会被跳过；设置过 API Key 时会先让 DeepSeek 核对译文。',
+    fields: [{ name: 'text', label: '', type: 'textarea', rows: 12, placeholder: 'Misaotra anao.\n谢谢你。\nManao ahoana ianao?\n你好吗？' }],
+    okText: '提取',
+    onSubmit(v){
+      const lines = (v.text || '').split('\n').map(s => s.replace(/\s+/g, ' ').trim()).filter(Boolean);
+      if (!lines.length){ alert('还没有输入内容'); return false; }
+      const r = pairLines(lines);
+      if (!r.pairs.length && !r.solo.length){ alert('没有识别到马达语句子，请检查格式'); return false; }
+      addPairs(r.pairs, r.solo).catch(err => setStatus('导入失败：' + (err.message || err), true));
+      return true;
+    }
+  });
+};
+
+// 手动添加
+document.getElementById('manualBtn').onclick = () => {
+  openModal({
+    title: '手动添加句子',
+    fields: [
+      { name: 'mg', label: '马达加斯加语', type: 'input', placeholder: 'Misaotra anao.' },
+      { name: 'zh', label: '中文翻译', type: 'input', placeholder: '谢谢你。' }
+    ],
+    okText: '添加',
+    onSubmit(v){
+      const mg = cleanText(v.mg || '');
+      const zh = cleanText(v.zh || '');
+      if (!mg || !zh){ alert('两边都要填写哦'); return false; }
+      if (sentences.some(s => normalizeKey(s.mg, s.zh) === normalizeKey(mg, zh))){
+        alert('这句已经在库里了');
+        return false;
+      }
+      sentences.push({ id: uid(), mg, zh, starred: false, done: false, createdAt: Date.now() });
+      saveData(); render(); setStatus('已添加 1 句');
+    }
+  });
+};
+
+// 校对设置
+document.getElementById('aiBtn').onclick = () => {
+  openModal({
+    title: 'DeepSeek 校对设置',
+    hint: '导入时把每条马达语交给 DeepSeek 重新翻译，再和 PPT 给的中文比对：差距 >70% 的条目自动删除。界面上显示的译文永远是 PPT 那版，AI 只判断不改写。API Key 只保存在这台电脑的浏览器里。',
+    fields: [
+      { name: 'apiKey', label: 'DeepSeek API Key', type: 'password', value: settings.apiKey || '', placeholder: 'sk-...' },
+      { name: 'model', label: '模型', type: 'input', value: settings.model || 'deepseek-chat', placeholder: 'deepseek-chat' },
+      { name: 'verify', label: '启用 AI 校对', type: 'checkbox', value: settings.verify !== false }
+    ],
+    okText: '保存',
+    onSubmit(v){
+      settings.apiKey = (v.apiKey || '').trim();
+      settings.model = (v.model || 'deepseek-chat').trim();
+      settings.verify = !!v.verify;
+      saveSettings();
+      if (settings.apiKey && settings.verify){
+        setStatus('已保存，正在验证 API Key…');
+        fetch('https://api.deepseek.com/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bear' + 'er ' + settings.apiKey },
+          body: JSON.stringify({
+            model: settings.model || 'deepseek-chat',
+            max_tokens: 1,
+            messages: [{ role: 'user', content: 'hi' }]
+          })
+        }).then(async r => {
+          if (r.ok){ setStatus('API Key 可用 ✓'); return; }
+          let msg = 'HTTP ' + r.status;
+          try{ const j = await r.json(); if (j && j.error && j.error.message) msg = j.error.message; }catch(e){}
+          setStatus('API Key 不可用：' + msg, true);
+        }).catch(err => setStatus('验证失败（网络）：' + (err.message || err), true));
+      } else {
+        setStatus(settings.apiKey ? '已保存（未启用 AI 校对）' : '已保存，但没有填 API Key');
+      }
+    }
+  });
+};
+
+// 校对中文：拿现有中文和马达语原文逐条比对
+async function reviewSentences(){
+  const all = sentences.filter(s => s.zh && !s.pending && !s.aiFixed);
+  if (!all.length){ setStatus('没有需要校对的句子'); return; }
+  if (!aiReady()){ setStatus('先在 ⚙️ 校对设置 里填 API Key', true); return; }
+
+  // 已经校过但没处理的，直接用上次结论，不重复花钱
+  const flagged = all.filter(s => s.review && s.review.diff > 70);
+  const list = all.filter(s => !s.review);
+
+  const CHUNK = 8;
+  try{
+    for (let i = 0; i < list.length; i += CHUNK){
+      const chunk = list.slice(i, i + CHUNK);
+      setStatus(`校对中 ${Math.min(i + CHUNK, list.length)}/${list.length}…`);
+      const res = await aiCheckChunk(chunk.map(s => ({ mg: s.mg, zh: s.zh })));
+      chunk.forEach((s, k) => {
+        const r = res[k];
+        if (!r) return;
+        s.review = { diff: r.diff, reason: r.reason, suggest: r.suggest, at: Date.now() };
+        if (r.diff > 70) flagged.push(s);
+      });
+      saveData(); render();
+    }
+  }catch(err){
+    saveData(); render();
+    setStatus('校对中断：' + (err.message || err), true);
+    if (flagged.length) showReview(flagged);
+    return;
+  }
+
+  saveData(); render();
+  setStatus(`校对完成：${list.length} 句，发现 ${flagged.length} 句中文可能不准`);
+  showReview(flagged);
+}
+
+function showReview(items){
+  const overlay = document.getElementById('modal');
+  const box = overlay.querySelector('.modal-box');
+  const rowHTML = s => `<div class="rev-item" data-id="${s.id}" style="padding:12px;border-bottom:1px solid var(--line)">
+      <div style="font-weight:600">${esc(s.mg)}</div>
+      <div style="margin-top:4px;color:var(--muted)">现在：${esc(s.zh)}</div>
+      <div style="margin-top:4px;color:#2f7a52">建议：${esc(s.review.suggest || '（AI 没给建议）')}</div>
+      <div style="margin-top:4px;font-size:12.5px;color:#b06a1f">差距 ${s.review.diff}%${s.review.reason ? ' · ' + esc(s.review.reason) : ''}</div>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <button class="btn" data-rev="apply" data-id="${s.id}" style="padding:5px 10px;font-size:13px">用建议译文</button>
+        <button class="btn" data-rev="keep" data-id="${s.id}" style="padding:5px 10px;font-size:13px">保留原译文</button>
+      </div>
+    </div>`;
+
+  box.innerHTML = `
+    <h3>中文校对：${items.length} 句可能不准</h3>
+    <p class="hint">AI 把马达语重新译了一遍，和库里现有中文差距 &gt;70% 的列在这里。逐条选，或一次全部换成建议译文。</p>
+    ${items.length ? `<div style="max-height:50vh;overflow:auto;border:1px solid var(--line);border-radius:10px">${items.map(rowHTML).join('')}</div>` : '<p class="hint">这次没有发现明显问题。</p>'}
+    <div class="modal-foot">
+      ${items.length ? '<button class="btn" data-all>全部用建议译文</button>' : ''}
+      <button class="btn primary" data-close>完成</button>
+    </div>`;
+  overlay.classList.add('open');
+
+  const close = () => overlay.classList.remove('open');
+  box.querySelector('[data-close]').onclick = close;
+  overlay.onclick = e => { if (e.target === overlay) close(); };
+
+  box.onclick = e => {
+    const all = e.target.closest('[data-all]');
+    if (all){
+      let n = 0;
+      items.forEach(s => {
+        if (s.review && s.review.suggest){ s.zh = s.review.suggest; s.aiFixed = true; delete s.review; n++; }
+      });
+      saveData(); render(); close();
+      setStatus(`已替换 ${n} 句为 AI 建议译文`);
+      return;
+    }
+    const b = e.target.closest('button[data-rev]');
+    if (!b) return;
+    const s = sentences.find(x => x.id === b.dataset.id);
+    if (!s || !s.review) return;
+    if (b.dataset.rev === 'apply' && s.review.suggest){
+      s.zh = s.review.suggest;
+      s.aiFixed = true;
+    }
+    delete s.review;
+    saveData(); render();
+    const row = b.closest('.rev-item');
+    if (row){ row.style.opacity = '.45'; row.querySelectorAll('button').forEach(x => x.disabled = true); }
+  };
+}
+
+// 补译缺失（没有中文 / 待补译的句子）
+document.getElementById('reviewBtn').onclick = () => { reviewSentences(); };
+
+document.getElementById('fillBtn').onclick = async () => {
+  const pend = sentences.filter(s => s.pending || !s.zh);
+  if (!pend.length){ setStatus('没有待补译的句子'); return; }
+  if (!aiReady()){ setStatus('先在 ⚙️ 校对设置 里填 API Key', true); return; }
+  try{
+    const made = await aiTranslateAll(pend.map(s => s.mg));
+    const map = new Map(made.map(m => [m.mg, m.zh]));
+    let n = 0;
+    for (const s of pend){
+      const t = map.get(s.mg);
+      if (t){ s.zh = t; s.aiGen = true; s.pending = false; n++; }
+    }
+    saveData(); render();
+    setStatus(`补译完成 ${n} 句${pend.length - n ? `，仍有 ${pend.length - n} 句没拿到译文` : ''}`);
+  }catch(err){
+    setStatus('补译失败：' + (err.message || err), true);
+  }
+};
+
+// 整理现有数据
+document.getElementById('tidyBtn').onclick = () => {
+  if (!sentences.length){ setStatus('列表本来就是空的'); return; }
+  if (!confirm('按新规则整理现有句子：去掉括号符号、把重复的人名挪到译文行、删除马达语没有句读的条目、合并重复。继续？')) return;
+  const before = sentences.length;
+  let fixedNames = 0, droppedNoPunct = 0, droppedDup = 0;
+  const seen = new Set();
+  const out = [];
+  for (const s of sentences){
+    const f = fixNameTail(cleanText(s.mg), cleanText(s.zh));
+    const mg = f.mg, zh = f.zh;
+    if (f.mg !== s.mg || f.zh !== s.zh) fixedNames++;
+    if (!isSentence(mg)){ droppedNoPunct++; continue; }
+    const key = normalizeKey(mg, zh);
+    if (seen.has(key)){ droppedDup++; continue; }
+    seen.add(key);
+    out.push(Object.assign({}, s, { mg, zh }));
+  }
+  sentences = out;
+  saveData(); render();
+  setStatus(`整理完成：${before} 句 → ${out.length} 句，修好人名 ${fixedNames} 条，删除非句子 ${droppedNoPunct} 条${droppedDup ? `，合并重复 ${droppedDup} 条` : ''}`);
+};
+
+// 清空
+document.getElementById('clearBtn').onclick = () => {
+  if (!sentences.length){ setStatus('列表已经是空的了'); return; }
+  if (!confirm(`确定要清空全部 ${sentences.length} 句吗？此操作不可撤销。`)) return;
+  sentences = [];
+  saveData(); render(); setStatus('已清空');
+};
+
+// 方向切换
+document.getElementById('dirSeg').addEventListener('click', e => {
+  const b = e.target.closest('button[data-dir]');
+  if (!b) return;
+  settings.dir = b.dataset.dir;
+  saveSettings(); render();
+});
+
+// 筛选切换
+document.getElementById('filterSeg').addEventListener('click', e => {
+  const b = e.target.closest('button[data-filter]');
+  if (!b) return;
+  settings.filter = b.dataset.filter;
+  saveSettings(); render();
+});
+
+// 遮挡开关
+document.getElementById('hideToggle').addEventListener('change', e => {
+  settings.hidden = e.target.checked;
+  saveSettings(); render();
+});
+
+// 搜索
+let searchTimer = null;
+document.getElementById('search').addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(render, 120);
+});
+
+// 卡片操作
+document.getElementById('list').addEventListener('click', e => {
+  const card = e.target.closest('.card');
+  if (!card) return;
+  const id = card.dataset.id;
+  const item = sentences.find(s => s.id === id);
+  if (!item) return;
+
+  const btn = e.target.closest('button[data-act]');
+  if (btn){
+    const act = btn.dataset.act;
+    if (act === 'star'){
+      item.starred = !item.starred;
+    } else if (act === 'done'){
+      item.done = !item.done;
+      if (item.done) setStatus('已加入「已掌握」列表 👍');
+    } else if (act === 'del'){
+      if (!confirm('删除这一句？')) return;
+      sentences = sentences.filter(s => s.id !== id);
+    }
+    saveData();
+    render();
+    return;
+  }
+
+  // 点击卡片任意位置 → 揭开遮罩答案
+  const tgt = card.querySelector('.tgt');
+  if (tgt && tgt.classList.contains('masked')) tgt.classList.remove('masked');
+});
+
+/* =========================================================
+   启动
+   ========================================================= */
+loadAll();
+loadAiCache();
+render();
+</script>
+</body>
+</html>

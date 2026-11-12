@@ -3,7 +3,7 @@
  * 用法: node server.mjs [root]
  *   PORT=80 HOST=0.0.0.0 SYNC_PIN=xxxx KB_DIR=/home/ubuntu/kb
  */
-import { createServer } from 'node:http';
+import { createServer, request } from 'node:http';
 import { spawn } from 'node:child_process';
 import {
   createReadStream, existsSync, mkdirSync, readFileSync, readdirSync,
@@ -386,6 +386,34 @@ const server = createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://localhost');
     const path = decodeURIComponent(url.pathname);
+
+    // 词典反向代理：/dict/* -> 127.0.0.1:8080（仅内网监听）
+    if (url.pathname === '/dict') {
+      res.writeHead(302, { Location: '/dict/' });
+      return res.end();
+    }
+    if (url.pathname.startsWith('/dict/')) {
+      const dictPort = Number(process.env.DICT_PORT || 8080);
+      const upstream = request(
+        {
+          host: '127.0.0.1',
+          port: dictPort,
+          path: (url.pathname.slice(5) || '/') + url.search,
+          method: req.method,
+          headers: { ...req.headers, host: `127.0.0.1:${dictPort}` },
+        },
+        (up) => {
+          res.writeHead(up.statusCode || 502, up.headers);
+          up.pipe(res);
+        },
+      );
+      upstream.on('error', () => {
+        if (!res.headersSent) send(res, 502, 'dictionary service unavailable');
+        else res.end();
+      });
+      req.pipe(upstream);
+      return;
+    }
 
     // 实时推送：卡片一变就通知所有在线页面
     if (path === '/api/events') {

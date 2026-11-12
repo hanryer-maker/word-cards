@@ -1,86 +1,144 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta name="theme-color" content="#f5f6fb">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="单词卡">
-<title>单词卡 · Word Cards</title>
-<link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="assets/css/style.css?v=6">
-<link rel="stylesheet" href="assets/css/responsive.css?v=6">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TENY · 马达加斯加语学习台</title>
+<meta name="description" content="单词卡、双语例句、马达加斯加语词典，三个入口。" />
+<meta name="theme-color" content="#f6f1e6" />
+<link rel="icon" href="/wordcard/assets/img/icon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/site.css" />
+<style>
+  .home {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: clamp(30px, 8vw, 76px) clamp(18px, 4vw, 28px) 56px;
+  }
+  .eyebrow {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  .hero h1 {
+    font-family: var(--tn-serif);
+    font-size: clamp(52px, 12vw, 92px);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    margin: 14px 0 18px;
+    color: var(--tn-forest);
+  }
+  .hero h1 span {
+    display: block;
+    margin-top: 16px;
+    font-family: var(--tn-serif);
+    font-size: clamp(16px, 4vw, 24px);
+    font-weight: 400;
+    letter-spacing: 0.28em;
+    color: #807b6e;
+  }
+  .sub {
+    max-width: 35em;
+    margin: 0;
+    color: #4c4a42;
+    font-size: clamp(15px, 2.6vw, 17px);
+    line-height: 1.85;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: clamp(28px, 6vw, 52px);
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px 20px 18px;
+    background: var(--card);
+    border: 1px solid var(--tn-line);
+    border-radius: 18px;
+    box-shadow: 0 1px 2px rgba(27, 26, 22, 0.05);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: #2f7a62;
+    box-shadow: 0 12px 28px rgba(18, 63, 51, 0.1);
+  }
+  .icon {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: var(--primary-soft);
+    font-size: 23px;
+  }
+  .card h2 {
+    margin: 4px 0 0;
+    font-family: var(--tn-serif);
+    font-size: 21px;
+    color: var(--tn-forest);
+  }
+  .card p {
+    flex: 1;
+    margin: 0;
+    color: #6b7d76;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .go { font-size: 13.5px; font-weight: 600; color: var(--primary); }
+  footer {
+    margin-top: 44px;
+    padding-top: 16px;
+    border-top: 1px solid var(--tn-line);
+    color: #807b6e;
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+  }
+  @media (max-width: 760px) {
+    .cards { grid-template-columns: 1fr; }
+    .card { flex-direction: row; align-items: flex-start; flex-wrap: wrap; }
+    .card h2 { width: calc(100% - 62px); }
+    .card p { width: 100%; padding-left: 56px; }
+    .go { padding-left: 56px; }
+  }
+</style>
 </head>
 <body>
-<div class="wrap">
-
-  <header class="page">
-    <div>
-      <h1><span>📚</span>单词卡</h1>
-      <div class="sub">输入单词 · 点击翻转 · 两个方向各累计 5 次，全部背满自动归档</div>
-    </div>
-    <div class="meta">
-      <div class="stats" id="stats"></div>
-      <div class="sync" id="syncStatus" data-kind="">未同步</div>
-    </div>
+<main class="home">
+  <header class="hero">
+    <p class="eyebrow">MALAGASY · 学习工作台</p>
+    <h1>TENY<span>马达加斯加语</span></h1>
+    <p class="sub">从一张单词卡，到一整句对照，再到词根与派生词网络。三个入口，一处安放。</p>
   </header>
 
-  <div class="panel">
-    <form id="addForm" autocomplete="off">
-      <input id="wordInput" class="field" placeholder="单词，如 apple" required>
-      <input id="posInput" class="field" placeholder="词性，如 n." list="posList">
-      <datalist id="posList">
-        <option value="n."></option>
-        <option value="v."></option>
-        <option value="adj."></option>
-        <option value="adv."></option>
-        <option value="prep."></option>
-        <option value="conj."></option>
-        <option value="pron."></option>
-        <option value="num."></option>
-        <option value="art."></option>
-        <option value="int."></option>
-        <option value="phr."></option>
-      </datalist>
-      <input id="meaningInput" class="field" placeholder="汉译，如 苹果">
-      <input id="noteInput" class="field note-field" placeholder="备注（可选），如 复数 apples">
-      <div class="form-actions">
-        <button type="submit" id="submitBtn" class="btn">添加单词</button>
-        <button type="button" id="cancelBtn" class="btn ghost" hidden>取消</button>
-      </div>
-    </form>
-  </div>
+  <section class="cards" aria-label="三个学习入口">
+    <a class="card" href="/wordcard/">
+      <span class="icon">📚</span>
+      <h2>单词卡</h2>
+      <p>输入、翻转、双向累计；背满自动归档，支持多设备同步。</p>
+      <span class="go">进入单词卡 →</span>
+    </a>
+    <a class="card" href="/examples/">
+      <span class="icon">🧩</span>
+      <h2>双语例句</h2>
+      <p>从 PPT 提取「马达加斯加语 ↔ 中文」对照句，收藏与背诵打卡。</p>
+      <span class="go">进入例句库 →</span>
+    </a>
+    <a class="card" href="/dict/">
+      <span class="icon">🔎</span>
+      <h2>马达词典</h2>
+      <p>词性、派生词网络与三语释义，DeepSeek 即时生成中文翻译。</p>
+      <span class="go">进入词典 →</span>
+    </a>
+  </section>
 
-  <div class="toolbar">
-    <div class="seg folder-seg" id="folderSeg">
-      <button type="button" class="seg-btn active" data-folder="all">📁 全部</button>
-      <button type="button" class="seg-btn" data-folder="learning">📖 正在背</button>
-      <button type="button" class="seg-btn" data-folder="archived">✅ 背过了</button>
-    </div>
-
-    <div class="seg sort-seg" id="sortSeg">
-      <button type="button" class="seg-btn active" data-sort="added">📥 录入顺序</button>
-      <button type="button" class="seg-btn" data-sort="alpha">A→Z 字母排序</button>
-      <button type="button" class="seg-btn" data-sort="random">🎲 随机排序</button>
-    </div>
-    <button type="button" class="btn ghost" id="flipAllBtn" title="一键把所有卡片翻到同一面">🔄 全部翻到背面</button>
-    <button type="button" class="btn ghost" id="reshuffleBtn">重新打乱</button>
-    <input id="searchInput" class="field" placeholder="搜索单词 / 释义 / 备注…">
-  </div>
-
-  <div class="letters" id="letterBar"></div>
-
-  <div class="grid" id="grid"></div>
-  <noscript><div class="empty">需要启用 JavaScript 才能使用单词卡</div></noscript>
-
-</div>
-
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-<script src="assets/js/store.js?v=6" defer></script>
-<script src="assets/js/app.js?v=6" defer></script>
+  <footer>TENY · 马达加斯加语学习台 · 词源 motmalgache.org</footer>
+</main>
 </body>
 </html>
