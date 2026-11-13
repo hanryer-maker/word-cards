@@ -1,16 +1,16 @@
 ---
 title: "saona"
 tags: ["word","n."]
-date: "2026-11-07"
+date: "2026-11-13"
 card_id: "60d08617-56b8-4330-b918-de601565e935"
 pos: "n."
 meaning: "哀悼死者"
 note: ""
-markWord: 2
+markWord: 3
 markMeaning: 1
 isArchived: false
-updatedAt: 1794017332621
+updatedAt: 1794550780873
 ---
 释义：哀悼死者
 词性：n.
-进度：英 2/5 · 汉 1/5
+进度：英 3/5 · 汉 1/5
