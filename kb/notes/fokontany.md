@@ -1,16 +1,16 @@
 ---
 title: "fokontany"
 tags: ["word","n."]
-date: "2026-11-13"
+date: "2026-11-17"
 card_id: "d5448906-da40-4aa0-93f1-631d647d4fd8"
 pos: "n."
 meaning: "小区"
 note: ""
-markWord: 4
+markWord: 5
 markMeaning: 0
 isArchived: false
-updatedAt: 1794554501240
+updatedAt: 1794898111999
 ---
 释义：小区
 词性：n.
-进度：英 4/5 · 汉 0/5
+进度：英 5/5 · 汉 0/5

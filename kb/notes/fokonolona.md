@@ -1,16 +1,16 @@
 ---
 title: "fokonolona"
 tags: ["word","n."]
-date: "2026-11-13"
+date: "2026-11-17"
 card_id: "d59f522c-f151-4b89-9f28-cfe366390e6d"
 pos: "n."
 meaning: "社区服务者"
 note: ""
-markWord: 4
+markWord: 5
 markMeaning: 0
 isArchived: false
-updatedAt: 1794552654639
+updatedAt: 1794898110531
 ---
 释义：社区服务者
 词性：n.
-进度：英 4/5 · 汉 0/5
+进度：英 5/5 · 汉 0/5
