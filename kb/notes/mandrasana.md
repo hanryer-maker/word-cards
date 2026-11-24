@@ -1,16 +1,16 @@
 ---
 title: "mandrasana"
 tags: ["word","v."]
-date: "2026-11-07"
+date: "2026-11-24"
 card_id: "a277b776-0d72-4f5b-80dd-da07bea0f972"
 pos: "v."
-meaning: "等待"
+meaning: "被等待"
 note: ""
-markWord: 3
+markWord: 4
 markMeaning: 0
-isArchived: false
-updatedAt: 1794016899447
+isArchived: true
+updatedAt: 1795483166192
 ---
-释义：等待
+释义：被等待
 词性：v.
-进度：英 3/5 · 汉 0/5
+进度：英 4/5 · 汉 0/5
